@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family:'Times New Roman', Times, serif;
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .weather-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    h2 {
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .emoji {
+      font-size: 28px;
+      color: gold; /* 🌤 emoji in yellow */
+      margin-right: 5px;
+    }
+    .weather-card input {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      width: 80%;
+      font-size: 16px;
+    }
+    .weather-card button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      background: #ff9800;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+    .weather-card button:hover {
+      background: #109c6b;
+    }
+    .temp {
+      font-size: 32px;
+      font-weight: 400;
+      font-family: 'Times New Roman', Times, serif
+      margin: 10px 0;
+    }
+    .desc {
+      font-size: 20px;
+      font-family:'Times New Roman', Times, serif;
+      margin-bottom: 20px;
+    }
+    .extra {
+      font-size: 16px;
+      font-family:'Times New Roman', Times, serif;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-card">
+    <h2><span class="emoji">🌤</span>Weather App</h2>
+    <input type="text" id="city" placeholder="Enter city name" />
+    <button onclick="getWeather()">Get Weather</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const city = document.getElementById("city").value;
+      const apiKey = "9668c41ff930f624fcec8627d031c8cb"; // Your API key
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.cod === 200) {
+        document.getElementById("result").innerHTML = `
+          <div class="temp">${data.main.temp}°C</div>
+          <div class="desc">${data.weather[0].description}</div>
+          <div class="extra">Feels like: ${data.main.feels_like}°C</div>
+          <div class="extra">Humidity: ${data.main.humidity}%</div>
+          <div class="extra">Wind: ${data.wind.speed} m/s</div>
+        `;
+      } else {
+        document.getElementById("result").innerHTML = `<p>❌ City not found!</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
